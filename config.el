@@ -61,11 +61,16 @@
 ;;
 ;; You can also try 'gd' (or 'C-c g d') to jump to their definition and see how
 ;; they are implemented.
+;;
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Load heavy stuff
+(load! "Snippets/dragndropPersonal.el")
 
 ;; Calculator map
 (map! :g "C-<f2>" 'calc)
 
-;; Swap “C-t” and “C-x”, so it's easier to type on Dvorak layout
+;; Swap "C-t" and "C-x", so it's easier to type on Dvorak layout
 (keyboard-translate ?\C-t ?\C-x)
 (keyboard-translate ?\C-x ?\C-t)
 
@@ -75,27 +80,30 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  Org-mode stuff 
-(require 'org-habit)
-(setq org-agenda-files (list "~/org/todo.org"
-                             "~/org/gp.org"
-                             ;; "~/org/work.org"
-                             "~/org/school.org"
-                             ;; "~/org/home.org"
-                             ;; "~/org/tech.org"
-                             ;; "~/org/personal.org"
-                             ))
+(after! org-mode
+  :config
+  (require 'org-habit)
+  (setq org-agenda-files (list "~/org/todo.org"
+                               "~/org/gp.org"
+                               ;; "~/org/work.org"
+                               "~/org/school.org"
+                               ;; "~/org/home.org"
+                               ;; "~/org/tech.org"
+                               ;; "~/org/personal.org"
+                               ))
 
-(setq org-agenda-custom-commands
-      '(("c" . "My Custom Agendas")
-        ("cu" "Unscheduled TODO"
-         ((todo ""
-                ((org-agenda-overriding-header "\nUnscheduled TODO")
-                 (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
-         nil
-         nil)))
-(setq org-agenda-skip-scheduled-if-done t)
-(setq org-agenda-skip-deadline-if-done t)
-(setq org-refile-targets (quote ((org-agenda-files :level . 1))))
+  (setq org-agenda-custom-commands
+        '(("c" . "My Custom Agendas")
+          ("cu" "Unscheduled TODO"
+           ((todo ""
+                  ((org-agenda-overriding-header "\nUnscheduled TODO")
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
+           nil
+           nil)))
+  (setq org-agenda-skip-scheduled-if-done t)
+  (setq org-agenda-skip-deadline-if-done t)
+  (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
+  )
 
 (use-package! org-journal
   :custom
@@ -103,19 +111,25 @@
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
   (org-journal-date-format "%A, %d %B %Y")
-  :config
-  (setq org-journal-enable-agenda-integration t)
+  (org-journal-enable-agenda-integration t)
   )
-
-(use-package! deft
-  :after org
-  :custom
-  (deft-recursive t)
-  (deft-directory "~/org/roam/"))
 
 (use-package! org-roam
   :custom
   (org-roam-graph-viewer "firefox-dev")
   )
 
+
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Deft
+;;;; This is somehow used for org-mode
+(use-package! deft
+  :after org
+  :custom
+  (deft-recursive t)
+  (deft-directory "~/org/roam/"))
+
 (setq ispell-dictionary "es")
+
+
