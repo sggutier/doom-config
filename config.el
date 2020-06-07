@@ -80,29 +80,38 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  Org-mode stuff 
-(after! org-mode
-  :config
+(after! org
   (require 'org-habit)
-  (setq org-agenda-files (list "~/org/todo.org"
-                               "~/org/gp.org"
-                               ;; "~/org/work.org"
-                               "~/org/school.org"
-                               ;; "~/org/home.org"
-                               ;; "~/org/tech.org"
-                               ;; "~/org/personal.org"
-                               ))
-
-  (setq org-agenda-custom-commands
+  (setq org-agenda-files
+        (list "~/org/todo.org"
+              "~/org/gp.org"
+              "~/org/school.org"
+              )
+        org-capture-templates
+        (list
+         '("t" "todo" entry
+           (file "~/org/capture.org")
+           "* TODO %?\n %U\n")
+         ;; "* TODO %?\n")
+         )
+        org-agenda-custom-commands
         '(("c" . "My Custom Agendas")
           ("cu" "Unscheduled TODO"
            ((todo ""
                   ((org-agenda-overriding-header "\nUnscheduled TODO")
                    (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
            nil
-           nil)))
-  (setq org-agenda-skip-scheduled-if-done t)
-  (setq org-agenda-skip-deadline-if-done t)
-  (setq org-refile-targets (quote ((org-agenda-files :level . 1))))
+           nil))
+        ;; org-startup-indented t
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
+        org-ellipsis (if (char-displayable-p ?⤵) " ⤵" nil)
+        org-refile-targets (quote ((org-agenda-files :level . 1)))
+        ;; org-pretty-entities nil
+        org-hide-emphasis-markers t
+        )
+  (define-key global-map (kbd "S-<f12>") 'org-agenda)
+  (define-key global-map (kbd "<f12>") 'org-capture)
   )
 
 (use-package! org-journal
