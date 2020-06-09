@@ -27,7 +27,7 @@
 (setq doom-font (font-spec :family "BlexMono Nerd Font Mono" :size 14
                            ;;:weight 'semi-light
                            )
-      doom-variable-pitch-font (font-spec :family "IBM Plex Sans" :size 16)
+      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 16)
                                         ; doom-unicode-font (font-spec :family "Hack")
       doom-big-font (font-spec :family "BlexMono Nerd Font Mono" :size 18))
 
@@ -35,6 +35,7 @@
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one-light)
+(setq doom-themes-treemacs-theme "doom-colors")
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -140,5 +141,3 @@
   (deft-directory "~/org/roam/"))
 
 (setq ispell-dictionary "es")
-
-
