@@ -51,3 +51,4 @@
 ;(unpin! t)
 ;(package! )
 (package! org-download)
+(package! lorem-ipsum)

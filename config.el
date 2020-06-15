@@ -141,3 +141,7 @@
   (deft-directory "~/org/roam/"))
 
 (setq ispell-dictionary "es")
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Lorem Ipsum
+(use-package! lorem-ipsum)
