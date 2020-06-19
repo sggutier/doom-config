@@ -52,3 +52,4 @@
 ;(package! )
 (package! org-download)
 (package! lorem-ipsum)
+;; (package! auto-rename-tag)

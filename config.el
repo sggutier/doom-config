@@ -124,9 +124,8 @@
   (org-journal-enable-agenda-integration t)
   )
 
-(use-package! org-roam
-  :custom
-  (org-roam-graph-viewer "firefox-dev")
+(after! org-roam
+  (setq org-roam-graph-viewer "firefox-dev")
   )
 
 
@@ -145,3 +144,21 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Lorem Ipsum
 (use-package! lorem-ipsum)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Web
+(after! web-mode
+  (setq web-mode-auto-close-style 2)
+  )
+
+;; This modifies the matching tag automatically
+;; (use-package! auto-rename-tag
+;;   :config
+;;   (add-hook 'web-mode-hook (lambda () (auto-rename-tag-mode t)))
+;;   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Multiple Cursors
+(after! web-mode
+  (map! :g "C-S-<mouse-1>" #'mc/add-cursor-on-click)
+  )
