@@ -66,7 +66,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load heavy stuff
-(load! "Snippets/dragndropPersonal.el")
+;; (load! "Snippets/dragndropPersonal.el")
 
 ;; Calculator map
 (map! :g "C-<f2>" 'calc)
@@ -115,13 +115,12 @@
   (define-key global-map (kbd "<f12>") 'org-capture)
   )
 
-(use-package! org-journal
-  :custom
-  (org-journal-dir "~/org/roam/")
-  (org-journal-date-prefix "#+TITLE: ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-date-format "%A, %d %B %Y")
-  (org-journal-enable-agenda-integration t)
+(after! org-journal
+  (setq org-journal-dir "~/org/roam/")
+  (setq org-journal-date-prefix "#+TITLE: ")
+  (setq org-journal-file-format "%Y-%m-%d.org")
+  (setq org-journal-date-format "%A, %d %B %Y")
+  (setq org-journal-enable-agenda-integration t)
   )
 
 (after! org-roam
