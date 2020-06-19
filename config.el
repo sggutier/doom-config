@@ -66,10 +66,15 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load heavy stuff
-;; (load! "Snippets/dragndropPersonal.el")
+(load! "Snippets/dragndropPersonal.el")
 
-;; Calculator map
+;; Misc. Keybindings
 (map! :g "C-<f2>" 'calc)
+
+;; I hate it when MacOs thinks different
+(when (eq system-type 'darwin)
+  (setq mac-command-modifier 'control)
+  (setq mac-right-option-modifier 'none))
 
 ;; Swap "C-t" and "C-x", so it's easier to type on Dvorak layout
 (keyboard-translate ?\C-t ?\C-x)
