@@ -21,15 +21,37 @@
 ;; font string. You generally only need these two:
 ;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
-;;(setq doom-font (font-spec :family "Blex Mono NF" :size 12 :weight 'semi-light)
-                                        ;
-;;      doom-variable-pitch-font (font-spec :family "sans" :size 13))
-(setq doom-font (font-spec :family "BlexMono Nerd Font Mono" :size 14
+
+(defmacro get-first-available-font (font-list default-font-name)
+  ;; Gets a font-list and checks if that font is available in a graphical environment
+  ;; Otherwise, it returns default-font-name
+  ;; If emacs is running in a terminal, returns default-font-name also.
+  (if (display-graphic-p)
+      (cl-loop for font in font-list
+               when (find-font (font-spec :name font))
+               return font
+               finally return default-font-name)
+    default-font-name))
+
+(setq sggutier/monospace-font
+      (get-first-available-font
+       ("BlexMono Nerd Font Mono"
+        "Hack" "Source Code Pro" "Fira Code"
+        "Cascadia" "Monaco" "DejaVu Sans Mono" "Consolas")
+       "monospace"))
+
+(setq sggutier/sans-font
+      (get-first-available-font
+       ("Noto Sans" "IBM Plex Sans" "Helvetica")
+       "sans"))
+
+
+(setq doom-font (font-spec :family sggutier/monospace-font :size 14
                            ;;:weight 'semi-light
                            )
-      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 16)
+      doom-variable-pitch-font (font-spec :family sggutier/sans-font :size 16)
                                         ; doom-unicode-font (font-spec :family "Hack")
-      doom-big-font (font-spec :family "BlexMono Nerd Font Mono" :size 18))
+      doom-big-font (font-spec :family sggutier/monospace-font :size 18))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
