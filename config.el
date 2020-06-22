@@ -223,3 +223,17 @@
                     :completion-in-comments? t
                     :server-id 'iph-remote))
   )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Tramp Config
+(use-package! tramp
+  :config
+  (appendq! tramp-remote-path
+            '("/home/sggutier/bin/"
+              "/home/sggutier/.local/bin/"
+              "/home/sggutier/.local/share/bin/"
+              "/home/sggutier/.config/composer/vendor/bin"
+              "/home/sggutier/.npm-global/bin/"
+              "/snap/bin/"
+              "/something/that/doesnt/exist/"))
+  )
