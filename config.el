@@ -103,9 +103,6 @@
 (keyboard-translate ?\C-x ?\C-t)
 
 
-(after! lsp-python-ms
-  (set-lsp-priority! 'mspyls 1))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  Org-mode stuff 
 (after! org
@@ -188,4 +185,41 @@
 ;;;; Multiple Cursors
 (after! web-mode
   (map! :g "C-S-<mouse-1>" #'mc/add-cursor-on-click)
+  )
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; LSP
+;;;; Various lsp settings
+(after! lsp-python-ms
+  (set-lsp-priority! 'mspyls 1))
+
+(after! lsp-mode
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "/home/sggutier/.emacs.d/.local/etc/lsp/mspyls/Microsoft.Python.LanguageServer")
+                    :major-modes '(python-mode)
+                    :remote? t
+                    :notification-handlers (lsp-ht ("python/languageServerStarted" 'lsp-python-ms--language-server-started-callback)
+                                                   ("telemetry/event" 'ignore)
+                                                   ("python/reportProgress" 'lsp-python-ms--report-progress-callback)
+                                                   ("python/beginProgress" 'lsp-python-ms--begin-progress-callback)
+                                                   ("python/endProgress" 'lsp-python-ms--end-progress-callback))
+                    :initialization-options 'lsp-python-ms--extra-init-params
+                    :initialized-fn (lambda (workspace)
+                                      (with-lsp-workspace workspace
+                                        (lsp--set-configuration (lsp-configuration-section "python"))))
+                    :server-id 'mspyls-remote))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection '("/home/sggutier/.npm-global/bin/intelephense" "--stdio"))
+                    :major-modes '(php-mode)
+                    :remote? t
+                    :priority -1
+                    :notification-handlers (ht ("indexingStarted" #'ignore)
+                                               ("indexingEnded" #'ignore))
+                    :initialization-options (lambda ()
+                                              (list :storagePath lsp-intelephense-storage-path
+                                                    :licenceKey lsp-intelephense-licence-key
+                                                    :clearCache lsp-intelephense-clear-cache))
+                    :multi-root lsp-intelephense-multi-root
+                    :completion-in-comments? t
+                    :server-id 'iph-remote))
   )
