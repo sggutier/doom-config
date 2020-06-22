@@ -144,7 +144,7 @@
   (org-journal-dir "~/org/roam/")
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-date-format "%A, %d %B %Y")
+  (org-journal-date-format "%Y-%m-%d")
   (org-journal-enable-agenda-integration t)
   )
 
@@ -206,7 +206,7 @@
                     :initialization-options 'lsp-python-ms--extra-init-params
                     :initialized-fn (lambda (workspace)
                                       (with-lsp-workspace workspace
-                                        (lsp--set-configuration (lsp-configuration-section "python"))))
+                                                          (lsp--set-configuration (lsp-configuration-section "python"))))
                     :server-id 'mspyls-remote))
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-tramp-connection '("intelephense" "--stdio"))
@@ -223,20 +223,27 @@
                     :completion-in-comments? t
                     :server-id 'iph-remote))
   (lsp-register-client
- (make-lsp-client :new-connection (lsp-tramp-connection (cons "html-languageserver" lsp-html-server-command-args))
-                  :major-modes '(html-mode sgml-mode mhtml-mode web-mode)
-                  :remote? t
-                  :priority -4
-                  :completion-in-comments? t
-                  :server-id 'html-ls
-                  :initialized-fn (lambda (w)
-                                    (with-lsp-workspace w
-                                      (lsp--set-configuration
-                                       (lsp-configuration-section "html"))))
-                  :download-server-fn (lambda (_client callback error-callback _update?)
-                                        (lsp-package-ensure
-                                         'html-language-server callback
-                                         error-callback))))
+   (make-lsp-client :new-connection (lsp-tramp-connection (cons "html-languageserver" lsp-html-server-command-args))
+                    :major-modes '(html-mode sgml-mode mhtml-mode web-mode)
+                    :remote? t
+                    :priority -4
+                    :completion-in-comments? t
+                    :server-id 'html-ls
+                    :initialized-fn (lambda (w)
+                                      (with-lsp-workspace w
+                                                          (lsp--set-configuration
+                                                           (lsp-configuration-section "html"))))
+                    :download-server-fn (lambda (_client callback error-callback _update?)
+                                          (lsp-package-ensure
+                                           'html-language-server callback
+                                           error-callback))))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection '("css-languageserver" "--stdio"))
+                    :major-modes '(css-mode less-mode less-css-mode sass-mode scss-mode)
+                    :remote? t
+                    :priority -1
+                    :action-handlers (lsp-ht ("_css.applyCodeAction" #'lsp-clients-css--apply-code-action))
+                    :server-id 'css-ls))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
