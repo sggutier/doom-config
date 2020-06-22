@@ -209,7 +209,7 @@
                                         (lsp--set-configuration (lsp-configuration-section "python"))))
                     :server-id 'mspyls-remote))
   (lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection '("/home/sggutier/.npm-global/bin/intelephense" "--stdio"))
+   (make-lsp-client :new-connection (lsp-tramp-connection '("intelephense" "--stdio"))
                     :major-modes '(php-mode)
                     :remote? t
                     :priority -1
@@ -222,6 +222,21 @@
                     :multi-root lsp-intelephense-multi-root
                     :completion-in-comments? t
                     :server-id 'iph-remote))
+  (lsp-register-client
+ (make-lsp-client :new-connection (lsp-tramp-connection (cons "html-languageserver" lsp-html-server-command-args))
+                  :major-modes '(html-mode sgml-mode mhtml-mode web-mode)
+                  :remote? t
+                  :priority -4
+                  :completion-in-comments? t
+                  :server-id 'html-ls
+                  :initialized-fn (lambda (w)
+                                    (with-lsp-workspace w
+                                      (lsp--set-configuration
+                                       (lsp-configuration-section "html"))))
+                  :download-server-fn (lambda (_client callback error-callback _update?)
+                                        (lsp-package-ensure
+                                         'html-language-server callback
+                                         error-callback))))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
