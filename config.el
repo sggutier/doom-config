@@ -40,6 +40,11 @@
         "Cascadia" "Monaco" "DejaVu Sans Mono" "Consolas")
        "monospace"))
 
+(setq sggutier/serif-font
+      (get-first-available-font
+       ("VictorMono Nerd Font Mono" "IBM Plex Sans" "Consolas" "Monaco")
+       nil))
+
 (setq sggutier/sans-font
       (get-first-available-font
        ("Noto Sans" "IBM Plex Sans" "Helvetica")
@@ -51,6 +56,9 @@
                            )
       doom-variable-pitch-font (font-spec :family sggutier/sans-font :size 16)
                                         ; doom-unicode-font (font-spec :family "Hack")
+      doom-serif-font (font-spec :family sggutier/serif-font :size 14
+                           ;;:weight 'semi-light
+                           )
       doom-big-font (font-spec :family sggutier/monospace-font :size 18))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
