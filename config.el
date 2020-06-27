@@ -54,18 +54,20 @@
 (setq doom-font (font-spec :family sggutier/monospace-font :size 14
                            ;;:weight 'semi-light
                            )
+      ;; Font below is used in zen-mode and in treemacs
       doom-variable-pitch-font (font-spec :family sggutier/sans-font :size 16)
                                         ; doom-unicode-font (font-spec :family "Hack")
       doom-serif-font (font-spec :family sggutier/serif-font :size 14
                            ;;:weight 'semi-light
                            )
-      doom-big-font (font-spec :family sggutier/monospace-font :size 18))
+      doom-big-font (font-spec :family sggutier/serif-font :size 18))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one-light)
+(setq doom-theme 'doom-solarized-light)
 (setq doom-themes-treemacs-theme "doom-colors")
+(setq-default cursor-type 'bar)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -158,6 +160,7 @@
 
 (after! org-roam
   (setq org-roam-graph-viewer "firefox-dev")
+  (setq +org-roam-open-buffer-on-find-file nil)
   )
 
 
