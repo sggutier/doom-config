@@ -145,6 +145,7 @@
         ;; org-pretty-entities nil
         org-hide-emphasis-markers t
         )
+  (setq org-log-done 'time)
   (define-key global-map (kbd "S-<f12>") 'org-agenda)
   (define-key global-map (kbd "<f12>") 'org-capture)
   )
