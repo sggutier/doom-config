@@ -195,9 +195,19 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; Multiple Cursors
-(after! web-mode
-  (map! :g "C-S-<mouse-1>" #'mc/add-cursor-on-click)
-  )
+(map! :g "C-S-<mouse-1>" #'mc/add-cursor-on-click)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;; Competitive Programming
+(defun single-g++-compile()
+  (interactive)
+  (let* ((src (file-name-nondirectory (buffer-file-name)))
+        (exe (file-name-sans-extension src)))
+    (compile (concat "g++ -std=c++17 -Wall -g " src " -o " exe " && ./" exe) t)
+    (switch-to-buffer-other-window "*compilation*")))
+
+(after! cc-mode
+  (map! :map c++-mode-map "<f5>" #'single-g++-compile))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; LSP
