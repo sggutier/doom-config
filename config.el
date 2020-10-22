@@ -42,7 +42,7 @@
 
 (setq sggutier/serif-font
       (get-first-available-font
-       ("VictorMono Nerd Font Mono" "IBM Plex Sans" "Consolas" "Monaco")
+       ("Hack" "VictorMono Nerd Font Mono" "IBM Plex Sans" "Consolas" "Monaco")
        nil))
 
 (setq sggutier/sans-font
@@ -60,7 +60,7 @@
       doom-serif-font (font-spec :family sggutier/serif-font :size 14
                            ;;:weight 'semi-light
                            )
-      doom-big-font (font-spec :family sggutier/serif-font :size 18))
+      doom-big-font (font-spec :family sggutier/monospace-font :size 20))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
