@@ -51,5 +51,6 @@
 ;(unpin! t)
 ;(package! )
 (package! org-download)
+(package! org-ref)
 (package! lorem-ipsum)
 ;; (package! auto-rename-tag)

@@ -117,10 +117,15 @@
 ;;;;  Org-mode stuff 
 (after! org
   (require 'org-habit)
+  (setq org-latex-pdf-process'
+        ("pdflatex -interaction nonstopmode -output-directory %o %f"
+         "biber %b"
+         "pdflatex -interaction nonstopmode -output-directory %o %f"
+         "pdflatex -interaction nonstopmode -output-directory %o %f"))
   (setq org-agenda-files
         (list "~/org/todo.org"
               "~/org/gp.org"
-              "~/org/school.org"
+              "~/org/projects.org"
               )
         org-capture-templates
         (list
@@ -164,6 +169,12 @@
   (setq +org-roam-open-buffer-on-find-file nil)
   )
 
+(use-package! org-ref
+  :custom
+  (org-ref-bibliography-notes "~/Dokumentoj/bibliography/notes.org")
+  (org-ref-default-bibliography '("~/Dokumentoj/bibliography/references.bib"))
+  (org-ref-pdf-directory "~/Dokumentoj/bibliography/bibtex-pdfs/")
+  )
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -203,11 +214,13 @@
   (interactive)
   (let* ((src (file-name-nondirectory (buffer-file-name)))
         (exe (file-name-sans-extension src)))
-    (compile (concat "g++ -std=c++17 -Wall -g " src " -o " exe " && ./" exe) t)
+    (compile (concat "g++ -std=c++17 -Wall -g " src " -o " exe ".bin && ./" exe ".bin") t)
     (switch-to-buffer-other-window "*compilation*")))
 
 (after! cc-mode
-  (map! :map c++-mode-map "<f5>" #'single-g++-compile))
+  (map! :map c++-mode-map "<f5>" #'single-g++-compile)
+  (setf (alist-get 'c++-mode c-default-style) "k&r")
+  )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; LSP
@@ -241,11 +254,10 @@
                                               (list :storagePath lsp-intelephense-storage-path
                                                     :licenceKey lsp-intelephense-licence-key
                                                     :clearCache lsp-intelephense-clear-cache))
-                    :multi-root lsp-intelephense-multi-root
                     :completion-in-comments? t
                     :server-id 'iph-remote))
   (lsp-register-client
-   (make-lsp-client :new-connection (lsp-tramp-connection (cons "html-languageserver" lsp-html-server-command-args))
+   (make-lsp-client :new-connection (lsp-tramp-connection "html-languageserver")
                     :major-modes '(html-mode sgml-mode mhtml-mode web-mode)
                     :remote? t
                     :priority -4
