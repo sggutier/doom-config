@@ -125,7 +125,6 @@
   (setq org-agenda-files
         (list "~/org/todo.org"
               "~/org/gp.org"
-              "~/org/buy.org"
               "~/org/projects.org"
               )
         org-capture-templates
@@ -215,8 +214,9 @@
   (interactive)
   (let* ((src (file-name-nondirectory (buffer-file-name)))
         (exe (file-name-sans-extension src)))
-    (compile (concat "g++ -std=c++17 -Wall -g " src " -o " exe ".bin && ./" exe ".bin") t)
-    (switch-to-buffer-other-window "*compilation*")))
+    (compile (concat "g++ -std=c++17 -Wall -g " src " -o " exe ".bin && echo 'Compilation done' && ./" exe ".bin") t)
+    (switch-to-buffer-other-window (compilation-buffer-name "compilation" 'compilation-mode nil))
+    ))
 
 (after! cc-mode
   (map! :map c++-mode-map "<f5>" #'single-g++-compile)
