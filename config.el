@@ -125,6 +125,7 @@
   (setq org-agenda-files
         (list "~/org/todo.org"
               "~/org/gp.org"
+              "~/org/buy.org"
               "~/org/projects.org"
               )
         org-capture-templates
