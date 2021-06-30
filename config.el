@@ -125,14 +125,13 @@
   (setq org-agenda-files
         (list "~/org/todo.org"
               "~/org/gp.org"
-              "~/org/projects.org"
               )
         org-capture-templates
         (list
          '("t" "todo" entry
            (file "~/org/capture.org")
-           "* TODO %?\n %U\n")
-         ;; "* TODO %?\n")
+           ;; "* TODO %?\n %U\n")
+           "* TODO %?\n")
          )
         org-agenda-custom-commands
         '(("c" . "My Custom Agendas")
@@ -141,7 +140,14 @@
                   ((org-agenda-overriding-header "\nUnscheduled TODO")
                    (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
            nil
-           nil))
+           nil)
+          ("cd" "Untimed TODO"
+           ((todo ""
+                  ((org-agenda-overriding-header "\nUntimed TODO")
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'deadline 'todo '("WAIT" "HOLD" "PROJ"))))))
+           nil
+           nil)
+          )
         ;; org-startup-indented t
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
@@ -157,7 +163,7 @@
 
 (use-package! org-journal
   :custom
-  (org-journal-dir "~/org/roam/")
+  (org-journal-dir "~/org/journal/")
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
   (org-journal-date-format "%Y-%m-%d")
@@ -279,6 +285,11 @@
                     :priority -1
                     :action-handlers (lsp-ht ("_css.applyCodeAction" #'lsp-clients-css--apply-code-action))
                     :server-id 'css-ls))
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-tramp-connection "clangd")
+                      :major-modes '(c-mode c++-mode)
+                      :remote? t
+                      :server-id 'clangd-remote))
   )
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
