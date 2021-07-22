@@ -35,14 +35,14 @@
 
 (setq sggutier/monospace-font
       (get-first-available-font
-       ("BlexMono Nerd Font Mono"
+       ("BlexMono Nerd Font Mono" "Noto Mono"
         "Hack" "Source Code Pro" "Fira Code"
         "Cascadia" "Monaco" "DejaVu Sans Mono" "Consolas")
        "monospace"))
 
 (setq sggutier/serif-font
       (get-first-available-font
-       ("Hack" "VictorMono Nerd Font Mono" "IBM Plex Sans" "Consolas" "Monaco")
+       ("Noto Serif" "Hack" "VictorMono Nerd Font Mono" "IBM Plex Sans" "Consolas" "Monaco")
        nil))
 
 (setq sggutier/sans-font
@@ -60,7 +60,8 @@
       doom-serif-font (font-spec :family sggutier/serif-font :size 14
                            ;;:weight 'semi-light
                            )
-      doom-big-font (font-spec :family sggutier/monospace-font :size 20))
+      doom-big-font (font-spec :family sggutier/monospace-font :size 20)
+      doom-unicode-font (font-spec :family sggutier/monospace-font))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -167,7 +168,7 @@
   (org-journal-date-prefix "#+TITLE: ")
   (org-journal-file-format "%Y-%m-%d.org")
   (org-journal-date-format "%Y-%m-%d")
-  (org-journal-enable-agenda-integration t)
+  ;; (org-journal-enable-agenda-integration t)
   )
 
 (after! org-roam
@@ -180,6 +181,12 @@
   (org-ref-bibliography-notes "~/Dokumentoj/bibliography/notes.org")
   (org-ref-default-bibliography '("~/Dokumentoj/bibliography/references.bib"))
   (org-ref-pdf-directory "~/Dokumentoj/bibliography/bibtex-pdfs/")
+  )
+
+(use-package! mexican-holidays
+  :after holidays
+  :config
+  (setq holiday-local-holidays holiday-mexican-holidays)
   )
 
 
