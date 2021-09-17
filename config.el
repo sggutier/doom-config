@@ -35,7 +35,7 @@
 
 (setq sggutier/monospace-font
       (get-first-available-font
-       ("BlexMono Nerd Font Mono" "Noto Mono"
+       ("Jetbrains Mono" "IBM Plex Mono" "BlexMono Nerd Font Mono" "Noto Mono"
         "Hack" "Source Code Pro" "Fira Code"
         "Cascadia" "Monaco" "DejaVu Sans Mono" "Consolas")
        "monospace"))
@@ -50,9 +50,14 @@
        ("Noto Sans" "IBM Plex Sans" "Helvetica")
        "sans"))
 
+(setq sggutier/unicode-font
+      (get-first-available-font
+       ("Noto Color Emoji" "BlexMono Nerd Font Mono" "monospace" "Noto Sans" "IBM Plex Sans" "Helvetica")
+       "sans"))
+
 
 (setq doom-font (font-spec :family sggutier/monospace-font :size 14
-                           ;;:weight 'semi-light
+                           :weight 'regular
                            )
       ;; Font below is used in zen-mode and in treemacs
       doom-variable-pitch-font (font-spec :family sggutier/sans-font :size 16)
@@ -61,7 +66,15 @@
                            ;;:weight 'semi-light
                            )
       doom-big-font (font-spec :family sggutier/monospace-font :size 20)
-      doom-unicode-font (font-spec :family sggutier/monospace-font))
+      )
+
+(after! unicode-fonts
+  (setq doom-unicode-font (font-spec :family sggutier/unicode-font :size 14
+                           ;;:weight 'semi-light
+                           ))
+  ;; (setq doom-unicode-font doom-font)
+  ;; (doom/reload-font)
+  )
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -99,7 +112,7 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Load heavy stuff
-(load! "Snippets/dragndropPersonal.el")
+;; (load! "Snippets/dragndropPersonal.el")
 
 ;; Misc. Keybindings
 (map! :g "C-<f2>" 'calc)
@@ -160,6 +173,10 @@
   (setq org-log-done 'time)
   (define-key global-map (kbd "S-<f12>") 'org-agenda)
   (define-key global-map (kbd "<f12>") 'org-capture)
+  ;; (org-babel-do-load-languages
+  ;;  'org-babel-load-languages
+  ;;  '((emacs-lisp . t)
+  ;;    (http . t)))
   )
 
 (use-package! org-journal
@@ -181,6 +198,10 @@
   (org-ref-bibliography-notes "~/Dokumentoj/bibliography/notes.org")
   (org-ref-default-bibliography '("~/Dokumentoj/bibliography/references.bib"))
   (org-ref-pdf-directory "~/Dokumentoj/bibliography/bibtex-pdfs/")
+  )
+
+(use-package! org-drill
+  :after org
   )
 
 (use-package! mexican-holidays
