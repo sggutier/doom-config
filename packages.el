@@ -54,6 +54,7 @@
 (package! org-ref)
 (package! lorem-ipsum)
 (package! mexican-holidays)
-(package! org-drill)
+;; (package! org-drill)
 ;; (package! ob-http)
 ;; (package! auto-rename-tag)
+;; (package! denote)

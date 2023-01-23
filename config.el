@@ -35,7 +35,7 @@
 
 (setq sggutier/monospace-font
       (get-first-available-font
-       ("Jetbrains Mono" "IBM Plex Mono" "BlexMono Nerd Font Mono" "Noto Mono"
+       ("Comic Code Ligatures" "Jetbrains Mono" "IBM Prllex Mono" "BlexMono Nerd Font Mono" "Noto Mono"
         "Hack" "Source Code Pro" "Fira Code"
         "Cascadia" "Monaco" "DejaVu Sans Mono" "Consolas")
        "monospace"))
@@ -56,20 +56,20 @@
        "sans"))
 
 
-(setq doom-font (font-spec :family sggutier/monospace-font :size 14
+(setq doom-font (font-spec :family sggutier/monospace-font :size 10.0
                            :weight 'regular
                            )
       ;; Font below is used in zen-mode and in treemacs
-      doom-variable-pitch-font (font-spec :family sggutier/sans-font :size 16)
-                                        ; doom-unicode-font (font-spec :family "Hack")
-      doom-serif-font (font-spec :family sggutier/serif-font :size 14
-                           ;;:weight 'semi-light
-                           )
-      doom-big-font (font-spec :family sggutier/monospace-font :size 20)
+      ;; doom-variable-pitch-font (font-spec :family sggutier/sans-font :size 16)
+      ;;                                   ; doom-unicode-font (font-spec :family "Hack")
+      ;; doom-serif-font (font-spec :family sggutier/serif-font :size 14
+      ;;                      ;;:weight 'semi-light
+      ;;                      )
+      ;; doom-big-font (font-spec :family sggutier/monospace-font :size 20)
       )
 
 (after! unicode-fonts
-  (setq doom-unicode-font (font-spec :family sggutier/unicode-font :size 14
+  (setq doom-unicode-font (font-spec :family sggutier/monospace-font :size 10.0
                            ;;:weight 'semi-light
                            ))
   ;; (setq doom-unicode-font doom-font)
@@ -79,9 +79,10 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-solarized-light)
+;; (setq doom-theme 'doom-solarized-light)
+(setq doom-theme 'doom-gruvbox-light)
 (setq doom-themes-treemacs-theme "doom-colors")
-(setq-default cursor-type 'bar)
+(setq-default cursor-type t)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
@@ -115,17 +116,25 @@
 ;; (load! "Snippets/dragndropPersonal.el")
 
 ;; Misc. Keybindings
-(map! :g "C-<f2>" 'calc)
+(map! :g "<f2>" 'calc)
+(map! :g "C-x /" 'comment-line)
 
 ;; I hate it when MacOs thinks different
 (when (eq system-type 'darwin)
   (setq mac-command-modifier 'control)
   (setq mac-right-option-modifier 'none))
 
-;; Swap "C-t" and "C-x", so it's easier to type on Dvorak layout
-(keyboard-translate ?\C-t ?\C-x)
-(keyboard-translate ?\C-x ?\C-t)
+;; Swap "C-t" and "C-"x, so it's easier to type on Dvorak layout
+;; (define-key key-translation-map (kbd "C-t") (kbd "C-x"))
+;; (define-key key-translation-map (kbd "C-x") (kbd "C-t"))
 
+;; (global-set-key (kbd "C-t") (kbd "C-x"))
+;; (global-set-key (kbd "C-x") (kbd "C-t"))
+
+(define-key global-map (kbd "C-t") ctl-x-map)
+;; (define-key global-map (kbd "C-x") #'transpose-chars)
+
+(setq company-ispell-available nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  Org-mode stuff 
@@ -149,16 +158,16 @@
          )
         org-agenda-custom-commands
         '(("c" . "My Custom Agendas")
-          ("cu" "Unscheduled TODO"
+          ("z" "Unscheduled TODO"
            ((todo ""
                   ((org-agenda-overriding-header "\nUnscheduled TODO")
-                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp)))))
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'todo '("WAIT" "DONE" "IDEA" "HOLD"))))))
            nil
            nil)
           ("cd" "Untimed TODO"
            ((todo ""
                   ((org-agenda-overriding-header "\nUntimed TODO")
-                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'deadline 'todo '("WAIT" "HOLD" "PROJ"))))))
+                   (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'deadline 'todo '("WAIT" "HOLD" "PROJ" "HOLD"))))))
            nil
            nil)
           )
@@ -177,21 +186,28 @@
   ;;  'org-babel-load-languages
   ;;  '((emacs-lisp . t)
   ;;    (http . t)))
-  )
-
-(use-package! org-journal
-  :custom
-  (org-journal-dir "~/org/journal/")
-  (org-journal-date-prefix "#+TITLE: ")
-  (org-journal-file-format "%Y-%m-%d.org")
-  (org-journal-date-format "%Y-%m-%d")
-  ;; (org-journal-enable-agenda-integration t)
+  (set-company-backend! 'ispell nil)
   )
 
 (after! org-roam
-  (setq org-roam-graph-viewer "firefox-dev")
-  (setq +org-roam-open-buffer-on-find-file nil)
-  )
+ (setq org-roam-capture-templates
+      '(("d" "default" plain "%?" :target
+         (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+TITLE: ${title}\n#+DATE: %<%Y-%m-%d>\n")
+         :unnarrowed t))))
+
+;; (use-package! org-journal
+;;   :custom
+;;   (org-journal-dir "~/org/journal/")
+;;   (org-journal-date-prefix "#+TITLE: ")
+;;   (org-journal-file-format "%Y-%m-%d.org")
+;;   (org-journal-date-format "%Y-%m-%d")
+;;   ;; (org-journal-enable-agenda-integration t)
+;;   )
+
+;; (after! org-roam
+;;   (setq org-roam-graph-viewer "firefox-dev")
+;;   (setq +org-roam-open-buffer-on-find-file nil)
+;;   )
 
 (use-package! org-ref
   :custom
@@ -200,9 +216,9 @@
   (org-ref-pdf-directory "~/Dokumentoj/bibliography/bibtex-pdfs/")
   )
 
-(use-package! org-drill
-  :after org
-  )
+;; (use-package! org-drill
+;;   :after org
+;;   )
 
 (use-package! mexican-holidays
   :after holidays
@@ -256,6 +272,9 @@
   (map! :map c++-mode-map "<f5>" #'single-g++-compile)
   (setf (alist-get 'c++-mode c-default-style) "k&r")
   )
+
+(setq lsp-rust-analyzer-inlay-hints-mode t)
+(setq lsp-rust-analyzer-server-display-inlay-hints t)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; LSP
