@@ -149,6 +149,7 @@
         (list "~/org/todo.org"
               "~/org/gp.org"
               )
+        ;; org-overriding-columns-format "%68ITEM(Details) %20TAGS(Contexto) %9TODO(To Do) %3PRIORITY"
         org-capture-templates
         (list
          '("t" "todo" entry
@@ -170,6 +171,20 @@
                    (org-agenda-skip-function '(org-agenda-skip-entry-if 'timestamp 'deadline 'todo '("WAIT" "HOLD" "PROJ" "HOLD"))))))
            nil
            nil)
+          ("W" "Weekly review"
+           agenda ""
+           ((org-agenda-span 'week)
+            (org-agenda-start-on-weekday 0)
+            (org-agenda-start-with-log-mode t)
+            (org-agenda-skip-function
+             '(org-agenda-skip-entry-if 'nottodo 'done))
+            ))
+          ("A" "Super daily view"
+           agenda ""
+           ((org-agenda-span 'day)
+            (org-agenda-start-day "0d")
+            (org-agenda-start-with-log-mode t)
+            ))
           )
         ;; org-startup-indented t
         org-agenda-skip-scheduled-if-done t
