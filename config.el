@@ -69,7 +69,7 @@
       )
 
 (after! unicode-fonts
-  (setq doom-unicode-font (font-spec :family sggutier/monospace-font :size 10.0
+  (setq doom-symbol-font (font-spec :family sggutier/monospace-font :size 10.0
                            ;;:weight 'semi-light
                            ))
   ;; (setq doom-unicode-font doom-font)
@@ -117,7 +117,7 @@
 
 ;; Misc. Keybindings
 (map! :g "<f2>" 'calc)
-(map! :g "C-x /" 'comment-line)
+(map! :g "C-x C-/" 'comment-line)
 
 ;; I hate it when MacOs thinks different
 (when (eq system-type 'darwin)
@@ -131,10 +131,16 @@
 ;; (global-set-key (kbd "C-t") (kbd "C-x"))
 ;; (global-set-key (kbd "C-x") (kbd "C-t"))
 
-(define-key global-map (kbd "C-t") ctl-x-map)
+;; (define-key global-map (kbd "C-t") ctl-x-map)
 ;; (define-key global-map (kbd "C-x") #'transpose-chars)
 
-(setq company-ispell-available nil)
+(keyboard-translate ?\C-t ?\C-x)
+(keyboard-translate ?\C-x ?\C-t)
+
+;;
+;; aoensuth
+
+;; (setq company-ispell-available nil)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;;  Org-mode stuff 
@@ -201,7 +207,7 @@
   ;;  'org-babel-load-languages
   ;;  '((emacs-lisp . t)
   ;;    (http . t)))
-  (set-company-backend! 'ispell nil)
+  ;; (set-company-backend! 'ispell nil)
   )
 
 (after! org-roam
@@ -294,8 +300,8 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;; LSP
 ;;;; Various lsp settings
-(after! lsp-python-ms
-  (set-lsp-priority! 'mspyls 1))
+;; (after! lsp-python-ms
+;;   (set-lsp-priority! 'mspyls 1))
 
 (after! lsp-mode
   (lsp-register-client
