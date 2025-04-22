@@ -58,3 +58,4 @@
 ;; (package! ob-http)
 ;; (package! auto-rename-tag)
 ;; (package! denote)
+(package! kkp :disable t)
