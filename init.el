@@ -15,6 +15,19 @@
 ;;      directory (for easy access to its source code).
 ;; (set-terminal-coding-system 'utf-8)
 
+;; Swap "C-t" and "C-"x, so it's easier to type on Dvorak layout
+(define-key key-translation-map (kbd "C-t") (kbd "C-x"))
+(define-key key-translation-map (kbd "C-x") (kbd "C-t"))
+
+;; (global-set-key (kbd "C-t") (kbd "C-x"))
+;; (global-set-key (kbd "C-x") (kbd "C-t"))
+
+;; (define-key global-map (kbd "C-t") ctl-x-map)
+;; (define-key global-map (kbd "C-x") #'transpose-chars)
+
+;; (keyboard-translate ?\C-t ?\C-x)
+;; (keyboard-translate ?\C-x ?\C-t)
+
 (doom! :input
        ;;chinese
        ;;japanese
